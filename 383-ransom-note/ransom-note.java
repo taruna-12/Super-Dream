@@ -10,9 +10,12 @@ class Solution {
 
         // Use letters for ransomNote
         for (int i = 0; i < ransomNote.length(); i++) {
-            count[ransomNote.charAt(i) - 'a']--;
 
-            if (count[ransomNote.charAt(i) - 'a'] < 0) {
+            int index = ransomNote.charAt(i) - 'a';
+
+            count[index]--;
+
+            if (count[index] < 0) {
                 return false;
             }
         }
