@@ -1,0 +1,57 @@
+class Solution {
+    public int maximumGap(int[] nums) {
+        if (nums.length < 2) {
+            return 0;
+        }
+
+        int min = nums[0];
+        int max = nums[0];
+
+        for (int num : nums) {
+            min = Math.min(min, num);
+            max = Math.max(max, num);
+        }
+
+        if (min == max) {
+            return 0;
+        }
+
+        int n = nums.length;
+
+        // Minimum possible maximum gap
+        int gap = (int) Math.ceil((double)(max - min) / (n - 1));
+
+        int[] bucketMin = new int[n];
+        int[] bucketMax = new int[n];
+        boolean[] used = new boolean[n];
+
+        for (int i = 0; i < n; i++) {
+            bucketMin[i] = Integer.MAX_VALUE;
+            bucketMax[i] = Integer.MIN_VALUE;
+        }
+
+        // Put numbers into buckets
+        for (int num : nums) {
+            int index = (num - min) / gap;
+
+            bucketMin[index] = Math.min(bucketMin[index], num);
+            bucketMax[index] = Math.max(bucketMax[index], num);
+            used[index] = true;
+        }
+
+        int answer = 0;
+        int previousMax = min;
+
+        // Find maximum gap between buckets
+        for (int i = 0; i < n; i++) {
+            if (!used[i]) {
+                continue;
+            }
+
+            answer = Math.max(answer, bucketMin[i] - previousMax);
+            previousMax = bucketMax[i];
+        }
+
+        return answer;
+    }
+}
